@@ -63,7 +63,7 @@ def get_jerk_factor(personality=log.LongitudinalPersonality.standard):
   if personality==log.LongitudinalPersonality.relaxed:
     return 1.5 #1.0
   elif personality==log.LongitudinalPersonality.standard:
-    return 1.9 #0.5
+    return 2.1 #0.5
   elif personality==log.LongitudinalPersonality.aggressive:
     return 0.9 #0.22
   else:
@@ -99,11 +99,11 @@ def get_dynamic_follow(v_ego, personality=log.LongitudinalPersonality.standard):
 
 def get_STOP_DISTANCE(personality=log.LongitudinalPersonality.standard):
   if personality==log.LongitudinalPersonality.relaxed:
-    return 8.0
+    return 6.0
   elif personality==log.LongitudinalPersonality.standard:
-    return 8.0
+    return 6.0
   elif personality==log.LongitudinalPersonality.aggressive:
-    return 8.0
+    return 6.0
   else:
     raise NotImplementedError("Longitudinal personality not supported")
 
@@ -395,8 +395,8 @@ class LongitudinalMpc:
     v_ego = self.x0[1]
     t_follow = get_T_FOLLOW(personality) if not dynamic_follow else get_dynamic_follow(v_ego, personality)
     stop_distance = get_STOP_DISTANCE(personality)
-    #if not (self.CP.flags & ToyotaFlags.SMART_DSU) or dynamic_follow:
-      #stop_distance += 1.5
+    if not (self.CP.flags & ToyotaFlags.SMART_DSU) or dynamic_follow:
+      stop_distance += 4.0
 
     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
 
